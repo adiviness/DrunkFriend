@@ -46,13 +46,18 @@ public class MainActivity extends Activity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.textview, names);
 		ListView listView = (ListView) findViewById(R.id.listview1);
 		listView.setAdapter(adapter);
+		// check if GPS is enabled
+		if (!gpsEnabled()) {
+			Toast.makeText(getBaseContext(), "Please enable GPS", Toast.LENGTH_LONG).show();
+			finish();
+		}
 		// set click listener
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				numberToText = "Invalid";
 				TextView textView = (TextView) view;
 				String name = textView.getText().toString();
-				Toast.makeText(getBaseContext(), name, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getBaseContext(), name + " has been selected", Toast.LENGTH_SHORT).show();
 				// get number of selected contact
 				for(ContactData contact: data) {
 					if (contact.getName().equalsIgnoreCase(name)) {
@@ -61,14 +66,15 @@ public class MainActivity extends Activity {
 					}
 				}
 				// check to make sure number matches correct contact, remove after done debugging
-				Toast.makeText(getBaseContext(), numberToText, Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getBaseContext(), numberToText, Toast.LENGTH_SHORT).show();
 				// get location
 				locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 				// I should check if the GPS is enabled here, however I'm leaving that for later
 				locationListener = new MyLocationListener();
 				String locationProvider = LocationManager.GPS_PROVIDER;
 				locationManager.requestLocationUpdates(locationProvider, 2000, 50, locationListener);
-				// pause for 10 seconds, before running rest of code inside handler
+				Toast.makeText(getBaseContext(), "Gathering GPS information, this will take a little while...", Toast.LENGTH_LONG).show();
+				// pause for 15 seconds, before running rest of code inside handler
 				Handler handler = new Handler();
 				handler.postDelayed(new Runnable() {
 					public void run() {
@@ -83,9 +89,10 @@ public class MainActivity extends Activity {
 						//String message2 = "https://maps.google.com/maps?z=12&t=m&q=" + lon + "+N,+" + lat + "+W"; // Not the correct way to do is
 						String message2 = "https://maps.google.com/maps?z=12&t=m&q=" + lat + "," + lon; 
 						SmsManager sms = SmsManager.getDefault();
-						//sms.sendTextMessage(numberToText, null, message1, null, null);
+						sms.sendTextMessage(numberToText, null, message1, null, null);
 						sms.sendTextMessage(numberToText, null, message2, null, null);
-//						Toast.makeText(getBaseContext(), message2, Toast.LENGTH_LONG).show();
+						Toast.makeText(getBaseContext(), "Message sent!", Toast.LENGTH_SHORT).show();
+						finish();
 					}
 				}, 15000);
 				// end of handler code
@@ -112,6 +119,11 @@ public class MainActivity extends Activity {
 		}
 		while (names.moveToNext());
 		return data;
+	}
+	
+	public boolean gpsEnabled() {
+		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 	}
 }
 
