@@ -9,7 +9,6 @@ import java.util.Collections;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -66,7 +65,7 @@ public class MainActivity extends Activity {
 			noGPSEnabled.setPositiveButton("GPS Settings", new DialogInterface.OnClickListener() {		
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
+					// create intent to send user to GPS settings screen
 					Intent gpsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 					startActivity(gpsIntent);
 					dialog.dismiss();
