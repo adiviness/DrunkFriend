@@ -1,3 +1,7 @@
+// App Name: Drunk Friend
+// Author: Austin Diviness
+// Last Updated: 2/6/2013
+
 package com.austindiviness.drunkfriend;
 
 import java.util.ArrayList;
