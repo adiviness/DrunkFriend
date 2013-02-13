@@ -9,6 +9,7 @@ import java.util.Collections;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,6 +38,7 @@ public class MainActivity extends Activity {
 	public String numberToText;
 	public String contactName;
 	public String message1 = "Hi, this is an automated message being sent to you because I'm drunk and would like to be picked up near the following location:";
+	public ProgressDialog loading;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +80,7 @@ public class MainActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				numberToText = "Invalid";
 				TextView textView = (TextView) view;
-				contactName = textView.getText().toString();
-                // insert alert dialog here to make sure the user wants to text the user they picked
+				contactName = textView.getText().toString(); // insert alert dialog here to make sure the user wants to text the user they picked
 				AlertDialog.Builder checkCorrectContact = new AlertDialog.Builder(MainActivity.this);
                 checkCorrectContact.setTitle("Confirm Contact");
                 checkCorrectContact.setMessage("Do you want to send pick up message to " + contactName + "?");
@@ -101,6 +102,7 @@ public class MainActivity extends Activity {
         						break;
         					}
         				}
+                        loading = new ProgressDialog(getBaseContext()).show(MainActivity.this, "Gathering GPS Data", "This may take a little while...", true);
         				sendMessage(numberToText);
                     }
                 });
@@ -141,7 +143,7 @@ public class MainActivity extends Activity {
 		locationListener = new MyLocationListener();
 		String locationProvider = LocationManager.GPS_PROVIDER;
 		locationManager.requestLocationUpdates(locationProvider, 2000, 50, locationListener);
-		Toast.makeText(getBaseContext(), "Gathering GPS information, this will take a little while...", Toast.LENGTH_LONG).show();
+		//Toast.makeText(getBaseContext(), "Gathering GPS information, this will take a little while...", Toast.LENGTH_LONG).show();
 		// pause for 15 seconds, before running rest of code inside handler
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
@@ -150,6 +152,7 @@ public class MainActivity extends Activity {
                 if (location == null) {
                     //Toast.makeText(getBaseContext(), "GPS either turned off or cannot contact satellites", Toast.LENGTH_LONG).show();
                     AlertDialog.Builder badSignal = new AlertDialog.Builder(MainActivity.this);
+                    loading.dismiss();
                     badSignal.setTitle("No Satellite Coverage");
                     badSignal.setMessage("Insufficient satellite information is available. Perhaps try again outside?");
                     badSignal.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -183,6 +186,7 @@ public class MainActivity extends Activity {
 							finish();	
 						}
 					});
+					loading.dismiss();
 					messageSent.show();
                 }
 			}

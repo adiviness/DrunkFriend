@@ -2,4 +2,6 @@
 *.apk
 *.swp
 *.jar
-
+*.dex
+*.cache
+*.ap_
