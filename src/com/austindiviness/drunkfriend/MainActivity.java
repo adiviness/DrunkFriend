@@ -5,7 +5,7 @@
 package com.austindiviness.drunkfriend;
 
 import java.util.ArrayList;
-import java.util.Collections;
+//import java.util.Collections;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.Settings;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -48,7 +49,7 @@ public class MainActivity extends Activity {
 		for (ContactData item: data) {
 			names.add(item.getName());
 		}
-		Collections.sort(names);
+//		Collections.sort(names);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.textview, names);
 		ListView listView = (ListView) findViewById(R.id.listview1);
 		listView.setAdapter(adapter);
@@ -115,17 +116,21 @@ public class MainActivity extends Activity {
 	public ArrayList<ContactData> getContacts() {
 		ArrayList<ContactData> data = new ArrayList<ContactData>(); // array to hold contact data to return to main method
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI; // dunno
-		ContentResolver cr = getContentResolver(); // dunno
-		Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null); // never actually used, dunno
-		String[] projection = new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER}; // creates projection to gather data from name and number columnns in database
-		Cursor names = getContentResolver().query(uri, projection, null, null, null); // dunno
-		int indexName = names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME); // gets column index of name
-		int indexNumber = names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER); // gets column index of number
+		String[] projection = new String[] {
+				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, 
+				ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER, 
+				ContactsContract.CommonDataKinds.Phone.TYPE,
+				ContactsContract.CommonDataKinds.Phone.NUMBER}; 
+		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1";
+		Cursor names = getContentResolver().query(uri, projection, selection, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
 		names.moveToFirst();
 		do {
-			String name = names.getString(indexName);
-			String number = names.getString(indexNumber);
-			data.add(new ContactData(name, number));
+			int phoneType = names.getInt(names.getColumnIndex(Phone.TYPE));
+			if (phoneType == Phone.TYPE_MOBILE) {
+				String name = names.getString(names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+				String number = names.getString(names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+				data.add(new ContactData(name, number));
+			}
 		}
 		while (names.moveToNext());
 		return data;
