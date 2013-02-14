@@ -1,11 +1,10 @@
 // App Name: Drunk Friend
 // Author: Austin Diviness
-// Last Updated: 2/12/2013
+// Last Updated: 2/14/2013
 
 package com.austindiviness.drunkfriend;
 
 import java.util.ArrayList;
-//import java.util.Collections;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,6 +29,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	public ArrayList<ContactData> data;
@@ -39,6 +41,9 @@ public class MainActivity extends Activity {
 	public String contactName;
 	public String message1 = "Hi, this is an automated message being sent to you because I'm drunk and would like to be picked up near the following location:";
 	public ProgressDialog loading;
+    public int mainMenuId = 1;
+    public int settingsId = Menu.FIRST;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,6 @@ public class MainActivity extends Activity {
 		for (ContactData item: data) {
 			names.add(item.getName());
 		}
-//		Collections.sort(names);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.textview, names);
 		ListView listView = (ListView) findViewById(R.id.listview1);
 		listView.setAdapter(adapter);
@@ -197,6 +201,21 @@ public class MainActivity extends Activity {
 		}, 15000);
 		// end of handler code
 	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(mainMenuId, settingsId, "Settings");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case menu.settingsId:
+                Toast.makeText(MainActivity.this, "settings button clicked" Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
 
 
