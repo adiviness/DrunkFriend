@@ -204,16 +204,17 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(mainMenuId, settingsId, "Settings");
+        menu.add(mainMenuId, settingsId, 0, "Settings");
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case menu.settingsId:
-                Toast.makeText(MainActivity.this, "settings button clicked" Toast.LENGTH_SHORT).show();
+            case Menu.FIRST:
+                Toast.makeText(MainActivity.this, "settings button clicked", Toast.LENGTH_SHORT).show();
         }
+        return true;
     }
 
 }
