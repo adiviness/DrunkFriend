@@ -213,6 +213,8 @@ public class MainActivity extends Activity {
         switch(item.getItemId()) {
             case Menu.FIRST:
                 Toast.makeText(MainActivity.this, "settings button clicked", Toast.LENGTH_SHORT).show();
+                Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                MainActivity.this.startActivity(settingsIntent);
         }
         return true;
     }

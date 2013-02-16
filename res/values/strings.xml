@@ -4,5 +4,6 @@
     <string name="app_name">Drunk Friend</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="settings_activity">Settings</string>
 
 </resources>

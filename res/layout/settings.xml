@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Settings" >
+    <PreferenceCategory
+        android:title="Options" >
+        <EditTextPreference
+            android:key="pref_type"
+            android:title="Message text"
+            android:summary="Change message sent to friend"
+            android:dialogTitle="Enter Text" />
+        
+        
+        
+    </PreferenceCategory>
+    
+    
+    
+</PreferenceScreen>
