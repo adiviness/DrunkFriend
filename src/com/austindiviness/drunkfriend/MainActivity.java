@@ -185,7 +185,20 @@ public class MainActivity extends Activity {
 					// set message1 to the string stored in shared preferences, somewhere
 					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 					message1 = prefs.getString("message_to_text", "ERROR reading custom message. GPS location as follows:");
-					sms.sendTextMessage(numberToText, null, message1, null, null);
+					// send messages
+					if (message1.length() > 160) {
+						int numberOfMessages = message1.length() / 160;
+						if ((160 * numberOfMessages) < message1.length()) {
+							++numberOfMessages;
+						}
+						for (int i = 0; i < numberOfMessages - 1; ++i) {
+							sms.sendTextMessage(numberToText, null, message1.substring(i * 160, (i + 1) * 160), null, null);
+						}
+						sms.sendTextMessage(numberToText, null, message1.substring((numberOfMessages - 1) * 160, message1.length()), null, null);
+					}
+					else {
+						sms.sendTextMessage(numberToText, null, message1, null, null);
+					}
 					sms.sendTextMessage(numberToText, null, message2, null, null);
 					AlertDialog.Builder messageSent = new AlertDialog.Builder(MainActivity.this);
 					messageSent.setTitle("Success!");
