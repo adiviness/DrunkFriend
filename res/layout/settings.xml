@@ -5,10 +5,11 @@
     <PreferenceCategory
         android:title="Options" >
         <EditTextPreference
-            android:key="pref_type"
+            android:key="message_to_text"
             android:title="Message text"
             android:summary="Change message sent to friend"
-            android:dialogTitle="Enter Text" />
+            android:dialogTitle="Enter Text"
+            android:defaultValue="@string/message_to_text" />
         
         
         

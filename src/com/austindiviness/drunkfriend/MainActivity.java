@@ -13,6 +13,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,6 +21,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.Settings;
@@ -39,7 +41,7 @@ public class MainActivity extends Activity {
 	public LocationManager locationManager;
 	public String numberToText;
 	public String contactName;
-	public String message1 = "Hi, this is an automated message being sent to you because I'm drunk and would like to be picked up near the following location:";
+	public String message1;
 	public ProgressDialog loading;
     public int mainMenuId = 1;
     public int settingsId = Menu.FIRST;
@@ -180,6 +182,9 @@ public class MainActivity extends Activity {
 					// correct order to display values is apparently lat, lon, even though it seems pretty ambiguous
 					String message2 = "https://maps.google.com/maps?z=12&t=m&q=" + lat + "," + lon; 
 					SmsManager sms = SmsManager.getDefault();
+					// set message1 to the string stored in shared preferences, somewhere
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+					message1 = prefs.getString("message_to_text", "ERROR reading custom message. GPS location as follows:");
 					sms.sendTextMessage(numberToText, null, message1, null, null);
 					sms.sendTextMessage(numberToText, null, message2, null, null);
 					AlertDialog.Builder messageSent = new AlertDialog.Builder(MainActivity.this);
@@ -212,7 +217,7 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case Menu.FIRST:
-                Toast.makeText(MainActivity.this, "settings button clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "settings button clicked", Toast.LENGTH_SHORT).show();
                 Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
                 MainActivity.this.startActivity(settingsIntent);
         }
