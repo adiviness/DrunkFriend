@@ -1,6 +1,6 @@
 // App Name: Drunk Friend
 // Author: Austin Diviness
-// Last Updated: 2/14/2013
+// Last Updated: 2/17/2013
 
 package com.austindiviness.drunkfriend;
 
@@ -33,7 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	public ArrayList<ContactData> data;
