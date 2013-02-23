@@ -43,7 +43,7 @@ public class Home extends Activity {
 	}
 	
 	public void startFavoritesActivity(View v) {
-		Toast.makeText(getBaseContext(), "favorites", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getBaseContext(), "favorites", Toast.LENGTH_SHORT).show();
 		Intent favoritesIntent = new Intent(Home.this, FavoritesActivity.class);
 		Home.this.startActivity(favoritesIntent);
 	}

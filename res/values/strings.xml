@@ -6,5 +6,6 @@
     <string name="menu_settings">Settings</string>
     <string name="settings_activity">Settings</string>
     <string name="message_to_text">Hi, this is an automated message being sent to you because I\'m drunk and would like to be picked up near the following location:</string>
+    <string name="no_contact">No Contact Set</string>
 
 </resources>

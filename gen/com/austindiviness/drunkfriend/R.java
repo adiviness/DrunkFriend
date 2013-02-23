@@ -15,11 +15,17 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int home_space=0x7f070003;
-        public static final int launch_allcontacts_button=0x7f070002;
-        public static final int launch_speedial_button=0x7f070001;
+        public static final int home_space=0x7f070009;
+        public static final int launch_allcontacts_button=0x7f070008;
+        public static final int launch_speedial_button=0x7f070007;
         public static final int listview1=0x7f070000;
-        public static final int menu_settings=0x7f070004;
+        public static final int menu_settings=0x7f07000a;
+        public static final int speed_dial_1=0x7f070001;
+        public static final int speed_dial_2=0x7f070002;
+        public static final int speed_dial_3=0x7f070003;
+        public static final int speed_dial_4=0x7f070004;
+        public static final int speed_dial_5=0x7f070005;
+        public static final int speed_dial_6=0x7f070006;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -37,6 +43,7 @@ public final class R {
         public static final int hello_world=0x7f040001;
         public static final int menu_settings=0x7f040002;
         public static final int message_to_text=0x7f040004;
+        public static final int no_contact=0x7f040005;
         public static final int settings_activity=0x7f040003;
     }
     public static final class style {
