@@ -24,15 +24,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter> 
         </activity>
+        
         <activity
             android:name="com.austindiviness.drunkfriend.MainActivity"
             android:label="@string/app_name" >
-
         </activity>
+        
         <activity
             android:name="com.austindiviness.drunkfriend.SettingsActivity"
             android:label="@string/settings_activity" >
-            
+        </activity>
+        
+        <activity
+            android:name="com.austindiviness.drunkfriend.FavoritesActivity"
+            android:label="@string/app_name" >
         </activity>
     </application>
 
