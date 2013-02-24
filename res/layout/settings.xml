@@ -18,32 +18,32 @@
             android:key="dial1"
             android:title="Speed Dial 1"
             android:summary="Edit Contact"
-            android:defaultValue="null" />
+            android:defaultValue="None" />
 		<ListPreference
             android:key="dial2"
             android:title="Speed Dial 2"
             android:summary="Edit Contact"
-            android:defaultValue="null" />
+            android:defaultValue="None" />
         <ListPreference
             android:key="dial3"
             android:title="Speed Dial 3"
             android:summary="Edit Contact"
-            android:defaultValue="null" />
+            android:defaultValue="None" />
         <ListPreference
             android:key="dial4"
             android:title="Speed Dial 4"
             android:summary="Edit Contact"
-            android:defaultValue="null" />
+            android:defaultValue="None" />
         <ListPreference
             android:key="dial5"
             android:title="Speed Dial 5"
             android:summary="Edit Contact"
-            android:defaultValue="null" />
+            android:defaultValue="None" />
         <ListPreference
             android:key="dial6"
             android:title="Speed Dial 6"
             android:summary="Edit Contact"
-            android:defaultValue="null" />
+            android:defaultValue="None" />
     </PreferenceCategory>
     
     

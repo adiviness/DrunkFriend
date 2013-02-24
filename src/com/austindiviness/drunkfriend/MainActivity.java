@@ -59,28 +59,6 @@ public class MainActivity extends Activity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.textview, names);
 		ListView listView = (ListView) findViewById(R.id.listview1);
 		listView.setAdapter(adapter);
-		// check if GPS is enabled
-		if (!gpsEnabled()) {
-			AlertDialog.Builder noGPSEnabled = new AlertDialog.Builder(MainActivity.this);
-			noGPSEnabled.setTitle("GPS Disabled");
-			noGPSEnabled.setMessage("Please enable GPS in settings menu");
-			noGPSEnabled.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {	
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			});
-			noGPSEnabled.setPositiveButton("GPS Settings", new DialogInterface.OnClickListener() {		
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// create intent to send user to GPS settings screen
-					Intent gpsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-					startActivity(gpsIntent);
-					dialog.dismiss();
-				}
-			});
-			noGPSEnabled.show();
-		}
 		// set click listener
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

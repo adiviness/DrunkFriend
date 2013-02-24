@@ -1,16 +1,20 @@
 package com.austindiviness.drunkfriend;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.widget.Toast;
 
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 		ArrayList<ContactData> data;
 		ArrayList<String> names = new ArrayList<String>();
 		ArrayList<String> numbers = new ArrayList<String>();
@@ -43,6 +47,18 @@ public class SettingsActivity extends PreferenceActivity {
 				listPref.setEntryValues(names.toArray(new String[numbers.size()]));
 			}
 		}
+		
+		@Override
+		protected void onResume() {
+			super.onResume();
+			getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(SettingsActivity.this);
+		}
+		
+		@Override
+		protected void onPause() {
+			super.onPause();
+			getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(SettingsActivity.this);
+		}
 
 	// eventually move out of here and into Home.java, and pass ArrayList with intent
 	public ArrayList<ContactData> getContacts() {
@@ -67,5 +83,32 @@ public class SettingsActivity extends PreferenceActivity {
 		while (names.moveToNext());
 		return data;
 	}
+	
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+		Preference pref = findPreference(key);
+		String value = prefs.getString(key, "None");
+		//Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT).show();
+		boolean nameFlag = value.equalsIgnoreCase("None") ? false : true;
+		ArrayList<String> buttonPrefs = new ArrayList<String>(Arrays.asList(buttonPrefNames));
+		if (buttonPrefs.contains(key)) {
+			pref.setSummary(value);
+			//Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT).show();
+		}
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
