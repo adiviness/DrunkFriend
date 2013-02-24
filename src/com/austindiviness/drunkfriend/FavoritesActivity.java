@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,16 +20,21 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.telephony.SmsManager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class FavoritesActivity extends Activity {
 	public int mainMenuId = 1;
 	public int settingsId = Menu.FIRST;
+	
+	public final int contextMenuId = 2;
+	public final int editId = Menu.FIRST;
+	
 	public String numberToText;
 	public String contactName;
 	public LocationListener locationListener;
@@ -77,6 +81,7 @@ public class FavoritesActivity extends Activity {
 			}
 			else {
 				tempButton.setText(prefName);
+				registerForContextMenu(tempButton);
 			}
 		}
 	}
@@ -217,6 +222,22 @@ public class FavoritesActivity extends Activity {
 		}
 		return true;
 	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		//Toast.makeText(getBaseContext(), "context menu", Toast.LENGTH_SHORT).show();
+		menu.add(contextMenuId, editId, 0, "Edit");
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case editId:
+				Toast.makeText(getBaseContext(), "clicked edit", Toast.LENGTH_SHORT).show();
+				
+		}
+		return true;
+	}
 
 	public ArrayList<ContactData> getContacts() {
 		ArrayList<ContactData> data = new ArrayList<ContactData>(); // array to hold contact data to return to main method
@@ -240,5 +261,6 @@ public class FavoritesActivity extends Activity {
 		while (names.moveToNext());
 		return data;
 	}
+	
 	
 } // end of class
