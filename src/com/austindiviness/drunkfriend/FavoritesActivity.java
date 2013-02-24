@@ -34,6 +34,9 @@ public class FavoritesActivity extends Activity {
 	
 	public final int contextMenuId = 2;
 	public final int editId = Menu.FIRST;
+	public final int addContactId = Menu.FIRST + 1;
+	public final int removeContactId = Menu.FIRST + 2;
+	public final int callContactId = Menu.FIRST + 3;
 	
 	public String numberToText;
 	public String contactName;
@@ -59,6 +62,7 @@ public class FavoritesActivity extends Activity {
 		"dial5",
 		"dial6"
 	};
+	public Button lastContextMenuButton = null;
 	
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -81,8 +85,8 @@ public class FavoritesActivity extends Activity {
 			}
 			else {
 				tempButton.setText(prefName);
-				registerForContextMenu(tempButton);
 			}
+			registerForContextMenu(tempButton);
 		}
 	}
 	
@@ -226,6 +230,16 @@ public class FavoritesActivity extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		//Toast.makeText(getBaseContext(), "context menu", Toast.LENGTH_SHORT).show();
+		Button button = (Button) v;
+		String text = (String) button.getText();
+		lastContextMenuButton = button;
+		if (text.equalsIgnoreCase("No Contact Set")) {
+			menu.add(contextMenuId, addContactId, 1, "Add Contact");
+		}
+		else {
+			menu.add(contextMenuId, removeContactId, 1, "Remove Contact");
+			menu.add(contextMenuId, callContactId, 2, "Call");
+		}
 		menu.add(contextMenuId, editId, 0, "Edit");
 	}
 	
@@ -234,7 +248,19 @@ public class FavoritesActivity extends Activity {
 		switch(item.getItemId()) {
 			case editId:
 				Toast.makeText(getBaseContext(), "clicked edit", Toast.LENGTH_SHORT).show();
-				
+				break;
+			case addContactId:
+				break;
+			case removeContactId:
+				break;
+			case callContactId:
+				String number = getNumber(lastContextMenuButton.getText().toString(), data);
+				number = "tel:" + number.trim();
+				Toast.makeText(getBaseContext(), number, Toast.LENGTH_SHORT).show();
+				Intent callNumber = new Intent(Intent.ACTION_DIAL);
+				callNumber.setData(Uri.parse(number));
+				startActivity(callNumber);
+				break;
 		}
 		return true;
 	}
@@ -262,5 +288,13 @@ public class FavoritesActivity extends Activity {
 		return data;
 	}
 	
+	public String getNumber(String name, ArrayList<ContactData> data) {
+		for (ContactData item: data) {
+			if (item.getName().equalsIgnoreCase(name)) {
+				return item.getNumber();
+			}
+		}
+		return "null";
+	}
 	
 } // end of class
