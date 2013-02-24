@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.widget.Toast;
@@ -52,6 +53,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 		protected void onResume() {
 			super.onResume();
 			getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(SettingsActivity.this);
+			// set summary for speed dial prefs to selection
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
+			for (String prefName: buttonPrefNames) {
+				Preference pref = findPreference(prefName);
+				String value = prefs.getString(prefName, "None");
+				if (value.equalsIgnoreCase("None")) {
+					pref.setSummary("No Contact Selected");
+				}
+				else {
+					pref.setSummary(value);
+				}
+			}
 		}
 		
 		@Override
@@ -91,8 +104,13 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 		boolean nameFlag = value.equalsIgnoreCase("None") ? false : true;
 		ArrayList<String> buttonPrefs = new ArrayList<String>(Arrays.asList(buttonPrefNames));
 		if (buttonPrefs.contains(key)) {
-			pref.setSummary(value);
+			if (!nameFlag) {
+				pref.setSummary("No Contact Selected");
+			}
+			else {
+				pref.setSummary(value);
 			//Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 
