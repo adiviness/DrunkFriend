@@ -5,3 +5,8 @@
 *.dex
 *.cache
 *.ap_
+bin/res/
+.settings/
+lint.xml
+build.xml
+local.properties
