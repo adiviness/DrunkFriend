@@ -1,6 +1,7 @@
 package com.austindiviness.drunkfriend;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
@@ -63,6 +65,7 @@ public class FavoritesActivity extends Activity {
 		"dial6"
 	};
 	public Button lastContextMenuButton = null;
+	public int lastButtonId;
 	
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -229,34 +232,47 @@ public class FavoritesActivity extends Activity {
 	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		//Toast.makeText(getBaseContext(), "context menu", Toast.LENGTH_SHORT).show();
+		super.onCreateContextMenu(menu, v, menuInfo);
+		//Toast.makeText(getBaseContext(), "context menu: " + v.getId(), Toast.LENGTH_SHORT).show();
+		lastButtonId = v.getId();
 		Button button = (Button) v;
 		String text = (String) button.getText();
 		lastContextMenuButton = button;
 		if (text.equalsIgnoreCase("No Contact Set")) {
-			menu.add(contextMenuId, addContactId, 1, "Add Contact");
+//			menu.add(contextMenuId, addContactId, 1, "Add Contact");
 		}
 		else {
-			menu.add(contextMenuId, removeContactId, 1, "Remove Contact");
+//			menu.add(contextMenuId, removeContactId, 1, "Remove Contact");
 			menu.add(contextMenuId, callContactId, 2, "Call");
 		}
-		menu.add(contextMenuId, editId, 0, "Edit");
+//		menu.add(contextMenuId, editId, 0, "Edit");
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
-			case editId:
-				Toast.makeText(getBaseContext(), "clicked edit", Toast.LENGTH_SHORT).show();
-				break;
-			case addContactId:
-				break;
-			case removeContactId:
-				break;
+//			case editId:
+//				Toast.makeText(getBaseContext(), "clicked edit" + lastButtonId, Toast.LENGTH_SHORT).show();
+//				break;
+//			case addContactId:
+//				Toast.makeText(getBaseContext(), "clicked add contact", Toast.LENGTH_SHORT).show();
+//				break;
+//			case removeContactId:
+//				Button button = lastContextMenuButton;
+//				//Toast.makeText(getBaseContext(), String.valueOf(button.getId()), Toast.LENGTH_SHORT).show();
+//				int index = Arrays.asList(buttonIds).indexOf(Integer.parseInt(String.valueOf(button.getId())));
+//				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+//				Editor editor = prefs.edit();
+//				Toast.makeText(getBaseContext(), index, Toast.LENGTH_SHORT).show();
+//				editor.putString(buttonPrefNames[index], "None");
+//				editor.commit();
+//				button.setText("No Contact Set");
+//				
+//				break;
 			case callContactId:
 				String number = getNumber(lastContextMenuButton.getText().toString(), data);
 				number = "tel:" + number.trim();
-				Toast.makeText(getBaseContext(), number, Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getBaseContext(), number, Toast.LENGTH_SHORT).show();
 				Intent callNumber = new Intent(Intent.ACTION_DIAL);
 				callNumber.setData(Uri.parse(number));
 				startActivity(callNumber);
