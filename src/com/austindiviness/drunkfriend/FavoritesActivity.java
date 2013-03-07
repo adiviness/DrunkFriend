@@ -1,7 +1,6 @@
 package com.austindiviness.drunkfriend;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,6 +17,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
@@ -66,6 +66,7 @@ public class FavoritesActivity extends Activity {
 	};
 	public Button lastContextMenuButton = null;
 	public int lastButtonId;
+	
 	
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -239,38 +240,79 @@ public class FavoritesActivity extends Activity {
 		String text = (String) button.getText();
 		lastContextMenuButton = button;
 		if (text.equalsIgnoreCase("No Contact Set")) {
-//			menu.add(contextMenuId, addContactId, 1, "Add Contact");
+			menu.add(contextMenuId, addContactId, 1, "Add Contact");
 		}
 		else {
+			menu.add(contextMenuId, editId, 0, "Edit");
 			menu.add(contextMenuId, removeContactId, 1, "Remove Contact");
 			menu.add(contextMenuId, callContactId, 2, "Call");
 		}
-//		menu.add(contextMenuId, editId, 0, "Edit");
+
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		ArrayList<String> names = new ArrayList<String>();
+		names.add("None");
+		names.addAll(getNames(data));
+		final String[] nameArray = names.toArray(new String[names.size()]);
 		switch(item.getItemId()) {
-//			case editId:
-//				Toast.makeText(getBaseContext(), "clicked edit" + lastButtonId, Toast.LENGTH_SHORT).show();
-//				break;
-//			case addContactId:
-//				Toast.makeText(getBaseContext(), "clicked add contact", Toast.LENGTH_SHORT).show();
-//				break;
+			case editId:
+				builder.setItems(nameArray, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						int index = getIndexOfLastButtonClicked();
+						String name = nameArray[which];
+						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+						Editor editor = prefs.edit();
+						editor.putString(buttonPrefNames[index], name);
+						editor.commit();
+						// set button text
+						Button button = (Button) findViewById(lastButtonId);
+						if (name.equalsIgnoreCase("None")) {
+							button.setText("No Contact Set");
+						}
+						else {
+							button.setText(name);
+						}
+						return;
+					}
+				});
+				builder.show();
+				break;
+			case addContactId:
+				builder.setItems(nameArray, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						int index = getIndexOfLastButtonClicked();
+						String name = nameArray[which];
+						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+						Editor editor = prefs.edit();
+						editor.putString(buttonPrefNames[index], name);
+						editor.commit();
+						// set button text
+						Button button = (Button) findViewById(lastButtonId);
+						if (name.equalsIgnoreCase("None")) {
+							button.setText("No Contact Set");
+						}
+						else {
+							button.setText(name);
+						}
+						return;
+					}
+				});
+				builder.show();
+				break;
 			case removeContactId:
 				Button button = (Button) findViewById(lastButtonId);
-				Toast.makeText(getBaseContext(), String.valueOf(lastButtonId), Toast.LENGTH_SHORT).show();
-				int index = -1;
-				for (int i = 0; i < buttonIds.length; ++i) {
-					if (buttonIds[i] == lastButtonId) {
-						index = i;
-						break;
-					}
-				}
-				//int index = Arrays.asList(buttonIds).indexOf(lastButtonId);
+				int index = getIndexOfLastButtonClicked();
+				//Toast.makeText(getBaseContext(), String.valueOf(lastButtonId), Toast.LENGTH_SHORT).show();
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 				Editor editor = prefs.edit();
-				Toast.makeText(getBaseContext(), String.valueOf(index), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getBaseContext(), String.valueOf(index), Toast.LENGTH_SHORT).show();
 				editor.putString(buttonPrefNames[index], "None");
 				editor.commit();
 				button.setText("No Contact Set");
@@ -287,8 +329,17 @@ public class FavoritesActivity extends Activity {
 		}
 		return true;
 	}
+	
+	public int getIndexOfLastButtonClicked() {
+		for (int i = 0; i < buttonIds.length; ++i) {
+			if (buttonIds[i] == lastButtonId) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
-	public ArrayList<ContactData> getContacts() {
+ 	public ArrayList<ContactData> getContacts() {
 		ArrayList<ContactData> data = new ArrayList<ContactData>(); // array to hold contact data to return to main method
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI; // dunno
 		String[] projection = new String[] {
@@ -318,6 +369,14 @@ public class FavoritesActivity extends Activity {
 			}
 		}
 		return "null";
+	}
+	
+	public ArrayList<String> getNames(ArrayList<ContactData> data) {
+		ArrayList<String> names = new ArrayList<String>();
+		for (ContactData item: data) {
+			names.add(item.getName());
+		}
+		return names;
 	}
 	
 } // end of class
