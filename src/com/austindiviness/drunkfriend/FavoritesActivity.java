@@ -242,7 +242,7 @@ public class FavoritesActivity extends Activity {
 //			menu.add(contextMenuId, addContactId, 1, "Add Contact");
 		}
 		else {
-//			menu.add(contextMenuId, removeContactId, 1, "Remove Contact");
+			menu.add(contextMenuId, removeContactId, 1, "Remove Contact");
 			menu.add(contextMenuId, callContactId, 2, "Call");
 		}
 //		menu.add(contextMenuId, editId, 0, "Edit");
@@ -257,18 +257,25 @@ public class FavoritesActivity extends Activity {
 //			case addContactId:
 //				Toast.makeText(getBaseContext(), "clicked add contact", Toast.LENGTH_SHORT).show();
 //				break;
-//			case removeContactId:
-//				Button button = lastContextMenuButton;
-//				//Toast.makeText(getBaseContext(), String.valueOf(button.getId()), Toast.LENGTH_SHORT).show();
-//				int index = Arrays.asList(buttonIds).indexOf(Integer.parseInt(String.valueOf(button.getId())));
-//				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-//				Editor editor = prefs.edit();
-//				Toast.makeText(getBaseContext(), index, Toast.LENGTH_SHORT).show();
-//				editor.putString(buttonPrefNames[index], "None");
-//				editor.commit();
-//				button.setText("No Contact Set");
-//				
-//				break;
+			case removeContactId:
+				Button button = (Button) findViewById(lastButtonId);
+				Toast.makeText(getBaseContext(), String.valueOf(lastButtonId), Toast.LENGTH_SHORT).show();
+				int index = -1;
+				for (int i = 0; i < buttonIds.length; ++i) {
+					if (buttonIds[i] == lastButtonId) {
+						index = i;
+						break;
+					}
+				}
+				//int index = Arrays.asList(buttonIds).indexOf(lastButtonId);
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+				Editor editor = prefs.edit();
+				Toast.makeText(getBaseContext(), String.valueOf(index), Toast.LENGTH_SHORT).show();
+				editor.putString(buttonPrefNames[index], "None");
+				editor.commit();
+				button.setText("No Contact Set");
+				
+				break;
 			case callContactId:
 				String number = getNumber(lastContextMenuButton.getText().toString(), data);
 				number = "tel:" + number.trim();
