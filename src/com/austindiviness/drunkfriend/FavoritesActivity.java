@@ -11,13 +11,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
@@ -28,7 +29,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class FavoritesActivity extends Activity {
 	public int mainMenuId = 1;
@@ -234,7 +234,6 @@ public class FavoritesActivity extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		//Toast.makeText(getBaseContext(), "context menu: " + v.getId(), Toast.LENGTH_SHORT).show();
 		lastButtonId = v.getId();
 		Button button = (Button) v;
 		String text = (String) button.getText();
@@ -309,10 +308,8 @@ public class FavoritesActivity extends Activity {
 			case removeContactId:
 				Button button = (Button) findViewById(lastButtonId);
 				int index = getIndexOfLastButtonClicked();
-				//Toast.makeText(getBaseContext(), String.valueOf(lastButtonId), Toast.LENGTH_SHORT).show();
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 				Editor editor = prefs.edit();
-				//Toast.makeText(getBaseContext(), String.valueOf(index), Toast.LENGTH_SHORT).show();
 				editor.putString(buttonPrefNames[index], "None");
 				editor.commit();
 				button.setText("No Contact Set");
@@ -321,7 +318,6 @@ public class FavoritesActivity extends Activity {
 			case callContactId:
 				String number = getNumber(lastContextMenuButton.getText().toString(), data);
 				number = "tel:" + number.trim();
-				//Toast.makeText(getBaseContext(), number, Toast.LENGTH_SHORT).show();
 				Intent callNumber = new Intent(Intent.ACTION_DIAL);
 				callNumber.setData(Uri.parse(number));
 				startActivity(callNumber);
@@ -342,6 +338,9 @@ public class FavoritesActivity extends Activity {
  	public ArrayList<ContactData> getContacts() {
 		ArrayList<ContactData> data = new ArrayList<ContactData>(); // array to hold contact data to return to main method
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI; // dunno
+		String sql = "data "
+                + "JOIN raw_contacts ON (data.raw_contact_id = raw_contacts._id) "
+                + "JOIN contacts ON (raw_contacts.contact_id = contacts._id)";
 		String[] projection = new String[] {
 				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, 
 				ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER, 
@@ -349,6 +348,7 @@ public class FavoritesActivity extends Activity {
 				ContactsContract.CommonDataKinds.Phone.NUMBER}; 
 		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1";
 		Cursor names = getContentResolver().query(uri, projection, selection, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+		//Cursor names = getReadableDatabase().rawQuery(sql, selection);
 		names.moveToFirst();
 		do {
 			int phoneType = names.getInt(names.getColumnIndex(Phone.TYPE));
