@@ -48,6 +48,7 @@ public final class R {
         public static final int edit_contact=0x7f040013;
         public static final int enter_text=0x7f04000b;
         public static final int favorites=0x7f040006;
+        public static final int gathering_gps_data=0x7f04001c;
         public static final int general_options=0x7f040008;
         public static final int hello_world=0x7f040001;
         public static final int menu_settings=0x7f040002;
@@ -56,6 +57,8 @@ public final class R {
         public static final int no=0x7f040017;
         public static final int no_contact=0x7f040005;
         public static final int no_contact_set_to_speed_dial=0x7f040014;
+        public static final int no_satellite_coverage=0x7f04001e;
+        public static final int no_satellite_info=0x7f04001f;
         public static final int ok=0x7f040015;
         public static final int question_mark=0x7f04001a;
         public static final int settings_activity=0x7f040003;
@@ -67,6 +70,7 @@ public final class R {
         public static final int speed_dial_5=0x7f040011;
         public static final int speed_dial_6=0x7f040012;
         public static final int speed_dial_options=0x7f04000c;
+        public static final int take_a_while=0x7f04001d;
         public static final int yes=0x7f040016;
     }
     public static final class style {

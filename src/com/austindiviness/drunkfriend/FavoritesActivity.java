@@ -73,6 +73,11 @@ public class FavoritesActivity extends Activity {
 	private String doYouWantToSendMessageTo;
 	private String questionMark;
 	private String space;
+	private String confirmContact;
+	private String gatheringGpsData;
+	private String takeAWhile;
+	private String noSatelliteCoverage;
+	private String noSatelliteInfo;
 	
 	
 	@Override
@@ -89,6 +94,11 @@ public class FavoritesActivity extends Activity {
 		doYouWantToSendMessageTo = getResources().getString(R.string.do_you_want_to_send_message_to);
 		questionMark = getResources().getString(R.string.question_mark);
 		space = getResources().getString(R.string.space);
+		confirmContact = getResources().getString(R.string.confirm_contact);
+		gatheringGpsData = getResources().getString(R.string.gathering_gps_data);
+		takeAWhile = getResources().getString(R.string.take_a_while);
+		noSatelliteCoverage = getResources().getString(R.string.no_satellite_coverage);
+		noSatelliteInfo = getResources().getString(R.string.no_satellite_info);
 	}
 	
 	@Override
@@ -131,7 +141,7 @@ public class FavoritesActivity extends Activity {
 		numberToText = "Invalid";
 		// insert alert dialog here to make sure the user wants to text the user they picked
 		AlertDialog.Builder checkCorrectContact = new AlertDialog.Builder(FavoritesActivity.this);
-        checkCorrectContact.setTitle("Confirm Contact");
+        checkCorrectContact.setTitle(confirmContact);
         checkCorrectContact.setMessage(doYouWantToSendMessageTo + space + contactName + questionMark);
         checkCorrectContact.setNegativeButton(no, new DialogInterface.OnClickListener() {
         	@Override
@@ -151,7 +161,7 @@ public class FavoritesActivity extends Activity {
 						break;
 					}
 				}
-                loading = new ProgressDialog(getBaseContext()).show(FavoritesActivity.this, "Gathering GPS Data", "This may take a little while...", true);
+                loading = new ProgressDialog(getBaseContext()).show(FavoritesActivity.this, gatheringGpsData, takeAWhile, true);
 				sendMessage(numberToText);
             }
         });
@@ -174,8 +184,8 @@ public class FavoritesActivity extends Activity {
                     //Toast.makeText(getBaseContext(), "GPS either turned off or cannot contact satellites", Toast.LENGTH_LONG).show();
                     AlertDialog.Builder badSignal = new AlertDialog.Builder(FavoritesActivity.this);
                     loading.dismiss();
-                    badSignal.setTitle("No Satellite Coverage");
-                    badSignal.setMessage("Insufficient satellite information is available. Perhaps try again outside?");
+                    badSignal.setTitle(noSatelliteCoverage);
+                    badSignal.setMessage(noSatelliteInfo);
                     badSignal.setNeutralButton("OK", new DialogInterface.OnClickListener() {
                     	@Override
                     	public void onClick(DialogInterface dialog, int which) {

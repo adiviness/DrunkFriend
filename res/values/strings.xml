@@ -29,5 +29,9 @@
     <string name="do_you_want_to_send_message_to">Do you want to send pick up message to</string>
     <string name="question_mark">&quot;?&quot;</string>
     <string name="space">&quot; &quot;</string>
+    <string name="gathering_gps_data">Gathering GPS Data</string>
+    <string name="take_a_while">This may take a little while...</string>
+    <string name="no_satellite_coverage">No Satellite Coverage</string>
+    <string name="no_satellite_info">Insufficient satellite information is available. Perhaps try again outside\?</string>
 
 </resources>
