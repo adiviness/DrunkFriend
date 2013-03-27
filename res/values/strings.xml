@@ -7,5 +7,27 @@
     <string name="settings_activity">Settings</string>
     <string name="message_to_text">Hi, this is an automated message being sent to you because I\'m drunk and would like to be picked up near the following location:</string>
     <string name="no_contact">No Contact Set</string>
+    <string name="favorites">Favorites</string>
+    <string name="all_contacts">All Contacts</string>
+    <string name="general_options">General Options</string>
+    <string name="message_text">Message text</string>
+    <string name="change_message_to_friend">Change message sent to friend</string>
+    <string name="enter_text">Enter Text</string>
+    <string name="speed_dial_options">Speed Dial Options</string>
+    <string name="speed_dial_1">Speed Dial 1</string>
+    <string name="speed_dial_2">Speed Dial 2</string>
+    <string name="speed_dial_3">Speed Dial 3</string>
+    <string name="speed_dial_4">Speed Dial 4</string>
+    <string name="speed_dial_5">Speed Dial 5</string>
+    <string name="speed_dial_6">Speed Dial 6</string>
+    <string name="edit_contact">Edit Contact</string>
+    <string name="no_contact_set_to_speed_dial">There is no contact set to this speed dial!</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="confirm_contact">Confirm Contact</string>
+    <string name="do_you_want_to_send_message_to">Do you want to send pick up message to</string>
+    <string name="question_mark">&quot;?&quot;</string>
+    <string name="space">&quot; &quot;</string>
 
 </resources>

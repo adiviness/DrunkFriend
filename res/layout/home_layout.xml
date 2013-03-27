@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="25"
-        android:text="Favorites"
+        android:text="@string/favorites"
         android:onClick="startFavoritesActivity" />
 
     <Button
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="25"
-        android:text="All Contacts"
+        android:text="@string/all_contacts"
         android:onClick="startAllContactsActivity" />
     <View 
         android:id="@+id/home_space"

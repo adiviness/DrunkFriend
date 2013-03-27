@@ -65,6 +65,14 @@ public class FavoritesActivity extends Activity {
 	};
 	public Button lastContextMenuButton = null;
 	public int lastButtonId;
+	private String noContactSet;
+	private String noContactSetToSpeedDial;
+	private String ok;
+	private String yes;
+	private String no;
+	private String doYouWantToSendMessageTo;
+	private String questionMark;
+	private String space;
 	
 	
 	@Override
@@ -72,6 +80,15 @@ public class FavoritesActivity extends Activity {
 		super.onCreate(bundle);
 		setContentView(R.layout.favorites_layout);
 		data = getContacts();
+		// set string resources
+		noContactSet = getResources().getString(R.string.no_contact);
+		noContactSetToSpeedDial = getResources().getString(R.string.no_contact_set_to_speed_dial);
+		ok = getResources().getString(R.string.ok);
+		yes = getResources().getString(R.string.yes);
+		no = getResources().getString(R.string.no);
+		doYouWantToSendMessageTo = getResources().getString(R.string.do_you_want_to_send_message_to);
+		questionMark = getResources().getString(R.string.question_mark);
+		space = getResources().getString(R.string.space);
 	}
 	
 	@Override
@@ -82,9 +99,9 @@ public class FavoritesActivity extends Activity {
 			int buttonId = buttonIds[i];
 			String buttonPref = buttonPrefNames[i];
 			Button tempButton = (Button) findViewById(buttonId);
-			String prefName = prefs.getString(buttonPref, "No Contact Set");
+			String prefName = prefs.getString(buttonPref, noContactSet);
 			if (prefName.equalsIgnoreCase("None")) {
-				tempButton.setText("No Contact Set");
+				tempButton.setText(noContactSet);
 			}
 			else {
 				tempButton.setText(prefName);
@@ -98,32 +115,32 @@ public class FavoritesActivity extends Activity {
 		contactName = (String)  button.getText();
 		//Toast.makeText(getBaseContext(), contactName, Toast.LENGTH_SHORT).show();
 		// check to make sure the button actually has a contact
-		if (contactName.equalsIgnoreCase("No Contact Set")) {
-			AlertDialog.Builder noContactSet = new AlertDialog.Builder(FavoritesActivity.this);
-			noContactSet.setTitle("No Contact Set");
-			noContactSet.setMessage("There is no contact set to this speed dial!");
-			noContactSet.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+		if (contactName.equalsIgnoreCase(noContactSet)) {
+			AlertDialog.Builder noContactSetDialog = new AlertDialog.Builder(FavoritesActivity.this);
+			noContactSetDialog.setTitle(noContactSet);
+			noContactSetDialog.setMessage(noContactSetToSpeedDial);
+			noContactSetDialog.setNeutralButton(ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 				}
 			});
-			noContactSet.show();
+			noContactSetDialog.show();
 			return;
 		}
 		numberToText = "Invalid";
 		// insert alert dialog here to make sure the user wants to text the user they picked
 		AlertDialog.Builder checkCorrectContact = new AlertDialog.Builder(FavoritesActivity.this);
         checkCorrectContact.setTitle("Confirm Contact");
-        checkCorrectContact.setMessage("Do you want to send pick up message to " + contactName + "?");
-        checkCorrectContact.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        checkCorrectContact.setMessage(doYouWantToSendMessageTo + space + contactName + questionMark);
+        checkCorrectContact.setNegativeButton(no, new DialogInterface.OnClickListener() {
         	@Override
             public void onClick(DialogInterface dialog, int which) {
         		// no, close the dialog
                 dialog.dismiss();
             }
         });
-        checkCorrectContact.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        checkCorrectContact.setPositiveButton(yes, new DialogInterface.OnClickListener() {
         	@Override
             public void onClick(DialogInterface dialog, int which) {
                 // yes, send the message

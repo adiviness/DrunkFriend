@@ -3,46 +3,46 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="Settings" >
     <PreferenceCategory
-        android:title="General Options" >
+        android:title="@string/general_options" >
         <EditTextPreference
             android:key="message_to_text"
-            android:title="Message text"
-            android:summary="Change message sent to friend"
-            android:dialogTitle="Enter Text"
+            android:title="@string/message_text"
+            android:summary="@string/change_message_to_friend"
+            android:dialogTitle="@string/enter_text"
             android:defaultValue="@string/message_to_text" />
     </PreferenceCategory>
     
     <PreferenceCategory
-        android:title="Speed Dial Options" >
+        android:title="@string/speed_dial_options" >
         <ListPreference
             android:key="dial1"
-            android:title="Speed Dial 1"
-            android:summary="Edit Contact"
+            android:title="@string/speed_dial_1"
+            android:summary="@string/edit_contact"
             android:defaultValue="None" />
 		<ListPreference
             android:key="dial2"
-            android:title="Speed Dial 2"
-            android:summary="Edit Contact"
+            android:title="@string/speed_dial_2"
+            android:summary="@string/edit_contact"
             android:defaultValue="None" />
         <ListPreference
             android:key="dial3"
-            android:title="Speed Dial 3"
-            android:summary="Edit Contact"
+            android:title="@string/speed_dial_3"
+            android:summary="@string/edit_contact"
             android:defaultValue="None" />
         <ListPreference
             android:key="dial4"
-            android:title="Speed Dial 4"
-            android:summary="Edit Contact"
+            android:title="@string/speed_dial_4"
+            android:summary="@string/edit_contact"
             android:defaultValue="None" />
         <ListPreference
             android:key="dial5"
-            android:title="Speed Dial 5"
-            android:summary="Edit Contact"
+            android:title="@string/speed_dial_5"
+            android:summary="@string/edit_contact"
             android:defaultValue="None" />
         <ListPreference
             android:key="dial6"
-            android:title="Speed Dial 6"
-            android:summary="Edit Contact"
+            android:title="@string/speed_dial_6"
+            android:summary="@string/edit_contact"
             android:defaultValue="None" />
     </PreferenceCategory>
     
