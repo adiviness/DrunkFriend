@@ -9,7 +9,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	
 	
 	public DBHelper(Context context) {
-		super(context, DB_NAME, null, 1); // dunno
+		super(context, null, null, 1); // dunno
 	}
 	@Override
 	public void onCreate(SQLiteDatabase db) {

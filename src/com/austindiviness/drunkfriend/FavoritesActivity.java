@@ -11,8 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -29,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.database.sqlite.*;
 
 public class FavoritesActivity extends Activity {
 	public int mainMenuId = 1;
@@ -347,8 +346,9 @@ public class FavoritesActivity extends Activity {
 				ContactsContract.CommonDataKinds.Phone.TYPE,
 				ContactsContract.CommonDataKinds.Phone.NUMBER}; 
 		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1";
+		String[] selectionArgs = {selection};
 		Cursor names = getContentResolver().query(uri, projection, selection, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
-		//Cursor names = getReadableDatabase().rawQuery(sql, selection);
+		//Cursor names = new DBHelper(getBaseContext()).getReadableDatabase().rawQuery(sql, selectionArgs);
 		names.moveToFirst();
 		do {
 			int phoneType = names.getInt(names.getColumnIndex(Phone.TYPE));
