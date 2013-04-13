@@ -2,7 +2,7 @@ package com.austindiviness.drunkfriend;
 
 import java.io.Serializable;
 
-public class ContactData implements Serializable{
+public class ContactData implements Serializable {
 	String name;
 	String number;
 	

@@ -98,16 +98,15 @@ public class Home extends Activity {
  	public ArrayList<ContactData> getContacts() {
 		ArrayList<ContactData> data = new ArrayList<ContactData>(); // array to hold contact data to return to main method
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI; // dunno
-		String sql = "data "
-                + "JOIN raw_contacts ON (data.raw_contact_id = raw_contacts._id) "
-                + "JOIN contacts ON (raw_contacts.contact_id = contacts._id)";
+//		String sql = "data "
+//                + "JOIN raw_contacts ON (data.raw_contact_id = raw_contacts._id) "
+//                + "JOIN contacts ON (raw_contacts.contact_id = contacts._id)";
 		String[] projection = new String[] {
 				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, 
 				ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER, 
 				ContactsContract.CommonDataKinds.Phone.TYPE,
 				ContactsContract.CommonDataKinds.Phone.NUMBER}; 
 		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1";
-		String[] selectionArgs = {selection};
 		Cursor names;
 		PackageManager manager = this.getPackageManager();
 		PackageInfo info = null;
@@ -124,7 +123,6 @@ public class Home extends Activity {
 		else {
 			names = getContentResolver().query(uri, projection, selection, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
 		}
-		//Cursor names = new DBHelper(getBaseContext()).getReadableDatabase().rawQuery(sql, selectionArgs);
 		names.moveToFirst();
 		do {
 			int phoneType = names.getInt(names.getColumnIndex(Phone.TYPE));

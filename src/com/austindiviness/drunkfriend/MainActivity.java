@@ -174,6 +174,7 @@ public class MainActivity extends Activity {
             case Menu.FIRST:
                 //Toast.makeText(MainActivity.this, "settings button clicked", Toast.LENGTH_SHORT).show();
                 Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+				settingsIntent.putExtra("contactsData", data);
                 MainActivity.this.startActivity(settingsIntent);
         }
         return true;

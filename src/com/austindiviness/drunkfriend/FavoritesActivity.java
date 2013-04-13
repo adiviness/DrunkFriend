@@ -10,19 +10,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.telephony.SmsManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -256,6 +250,7 @@ public class FavoritesActivity extends Activity {
 		switch(item.getItemId()) {
 			case Menu.FIRST:
 				Intent settingsIntent = new Intent(FavoritesActivity.this, SettingsActivity.class);
+				settingsIntent.putExtra("contactsData", data);
 				FavoritesActivity.this.startActivity(settingsIntent);
 		}
 		return true;
