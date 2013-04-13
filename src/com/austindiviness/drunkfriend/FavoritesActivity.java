@@ -10,11 +10,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -27,7 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.database.sqlite.*;
+import android.widget.Toast;
 
 public class FavoritesActivity extends Activity {
 	public int mainMenuId = 1;
@@ -374,7 +377,22 @@ public class FavoritesActivity extends Activity {
 				ContactsContract.CommonDataKinds.Phone.NUMBER}; 
 		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1";
 		String[] selectionArgs = {selection};
-		Cursor names = getContentResolver().query(uri, projection, selection, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+		Cursor names;
+		PackageManager manager = this.getPackageManager();
+		PackageInfo info = null;
+		try {
+			info = manager.getPackageInfo(getPackageName(), 0);
+		}
+		catch (Exception e) {
+			Toast.makeText(getBaseContext(), "Android version cannot be determined", Toast.LENGTH_LONG).show();
+			finish();
+		}
+		if (info.versionCode < Build.VERSION_CODES.HONEYCOMB) {
+			names = getContentResolver().query(uri, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+		}
+		else {
+			names = getContentResolver().query(uri, projection, selection, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+		}
 		//Cursor names = new DBHelper(getBaseContext()).getReadableDatabase().rawQuery(sql, selectionArgs);
 		names.moveToFirst();
 		do {
