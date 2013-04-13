@@ -87,7 +87,8 @@ public class FavoritesActivity extends Activity {
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		setContentView(R.layout.favorites_layout);
-		data = getContacts();
+		Bundle extraData = getIntent().getExtras();
+		data = (ArrayList<ContactData>) extraData.get("contactsData");
 		// set string resources
 		noContactSet = getResources().getString(R.string.no_contact);
 		noContactSetToSpeedDial = getResources().getString(R.string.no_contact_set_to_speed_dial);
@@ -364,49 +365,6 @@ public class FavoritesActivity extends Activity {
 		return -1;
 	}
 
- 	public ArrayList<ContactData> getContacts() {
-		ArrayList<ContactData> data = new ArrayList<ContactData>(); // array to hold contact data to return to main method
-		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI; // dunno
-		String sql = "data "
-                + "JOIN raw_contacts ON (data.raw_contact_id = raw_contacts._id) "
-                + "JOIN contacts ON (raw_contacts.contact_id = contacts._id)";
-		String[] projection = new String[] {
-				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, 
-				ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER, 
-				ContactsContract.CommonDataKinds.Phone.TYPE,
-				ContactsContract.CommonDataKinds.Phone.NUMBER}; 
-		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1";
-		String[] selectionArgs = {selection};
-		Cursor names;
-		PackageManager manager = this.getPackageManager();
-		PackageInfo info = null;
-		try {
-			info = manager.getPackageInfo(getPackageName(), 0);
-		}
-		catch (Exception e) {
-			Toast.makeText(getBaseContext(), "Android version cannot be determined", Toast.LENGTH_LONG).show();
-			finish();
-		}
-		if (info.versionCode < Build.VERSION_CODES.HONEYCOMB) {
-			names = getContentResolver().query(uri, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
-		}
-		else {
-			names = getContentResolver().query(uri, projection, selection, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
-		}
-		//Cursor names = new DBHelper(getBaseContext()).getReadableDatabase().rawQuery(sql, selectionArgs);
-		names.moveToFirst();
-		do {
-			int phoneType = names.getInt(names.getColumnIndex(Phone.TYPE));
-			if (phoneType == Phone.TYPE_MOBILE) {
-				String name = names.getString(names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-				String number = names.getString(names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-				data.add(new ContactData(name, number));
-			}
-		}
-		while (names.moveToNext());
-		return data;
-	}
-	
 	public String getNumber(String name, ArrayList<ContactData> data) {
 		for (ContactData item: data) {
 			if (item.getName().equalsIgnoreCase(name)) {

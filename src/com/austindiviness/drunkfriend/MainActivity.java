@@ -9,31 +9,24 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.provider.Settings;
 import android.telephony.SmsManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.view.Menu;
-import android.view.MenuItem;
-//import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	public ArrayList<ContactData> data;
@@ -51,7 +44,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_list);
-		data = getContacts(); // creates arraylist for contact data
+		Bundle extraData = getIntent().getExtras();
+		data = (ArrayList<ContactData>) extraData.get("contactsData");
 		ArrayList<String> names = new ArrayList<String>();
 		for (ContactData item: data) {
 			names.add(item.getName());
@@ -95,36 +89,6 @@ public class MainActivity extends Activity {
 		});
 	}
 
-
-
-	public ArrayList<ContactData> getContacts() {
-		ArrayList<ContactData> data = new ArrayList<ContactData>(); // array to hold contact data to return to main method
-		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI; // dunno
-		String[] projection = new String[] {
-				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, 
-				ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER, 
-				ContactsContract.CommonDataKinds.Phone.TYPE,
-				ContactsContract.CommonDataKinds.Phone.NUMBER}; 
-		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1";
-		Cursor names = getContentResolver().query(uri, projection, selection, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
-		names.moveToFirst();
-		do {
-			int phoneType = names.getInt(names.getColumnIndex(Phone.TYPE));
-			if (phoneType == Phone.TYPE_MOBILE) {
-				String name = names.getString(names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-				String number = names.getString(names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-				data.add(new ContactData(name, number));
-			}
-		}
-		while (names.moveToNext());
-		return data;
-	}
-	
-	public boolean gpsEnabled() {
-		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-	}
-	
 	public void sendMessage(String contactNumber) {
 		// get location
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

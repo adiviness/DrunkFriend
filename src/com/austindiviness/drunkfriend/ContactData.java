@@ -1,6 +1,8 @@
 package com.austindiviness.drunkfriend;
 
-public class ContactData {
+import java.io.Serializable;
+
+public class ContactData implements Serializable{
 	String name;
 	String number;
 	
