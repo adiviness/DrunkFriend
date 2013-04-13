@@ -28,7 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class AllContactsActivity extends Activity {
 	public ArrayList<ContactData> data;
 	public LocationListener locationListener;
 	public LocationManager locationManager;
@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
 				numberToText = "Invalid";
 				TextView textView = (TextView) view;
 				contactName = textView.getText().toString(); // insert alert dialog here to make sure the user wants to text the user they picked
-				AlertDialog.Builder checkCorrectContact = new AlertDialog.Builder(MainActivity.this);
+				AlertDialog.Builder checkCorrectContact = new AlertDialog.Builder(AllContactsActivity.this);
                 checkCorrectContact.setTitle("Confirm Contact");
                 checkCorrectContact.setMessage("Do you want to send pick up message to " + contactName + "?");
                 checkCorrectContact.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
         						break;
         					}
         				}
-                        loading = new ProgressDialog(getBaseContext()).show(MainActivity.this, "Gathering GPS Data", "This may take a little while...", true);
+                        loading = new ProgressDialog(getBaseContext()).show(AllContactsActivity.this, "Gathering GPS Data", "This may take a little while...", true);
         				sendMessage(numberToText);
                     }
                 });
@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
 				Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (location == null) {
                     //Toast.makeText(getBaseContext(), "GPS either turned off or cannot contact satellites", Toast.LENGTH_LONG).show();
-                    AlertDialog.Builder badSignal = new AlertDialog.Builder(MainActivity.this);
+                    AlertDialog.Builder badSignal = new AlertDialog.Builder(AllContactsActivity.this);
                     loading.dismiss();
                     badSignal.setTitle("No Satellite Coverage");
                     badSignal.setMessage("Insufficient satellite information is available. Perhaps try again outside?");
@@ -125,7 +125,7 @@ public class MainActivity extends Activity {
 					String message2 = "https://maps.google.com/maps?z=12&t=m&q=" + lat + "," + lon; 
 					SmsManager sms = SmsManager.getDefault();
 					// set message1 to the string stored in shared preferences, somewhere
-					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(AllContactsActivity.this);
 					message1 = prefs.getString("message_to_text", "ERROR reading custom message. GPS location as follows:");
 					// send messages
 					if (message1.length() > 160) {
@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
 						sms.sendTextMessage(numberToText, null, message1, null, null);
 					}
 					sms.sendTextMessage(numberToText, null, message2, null, null);
-					AlertDialog.Builder messageSent = new AlertDialog.Builder(MainActivity.this);
+					AlertDialog.Builder messageSent = new AlertDialog.Builder(AllContactsActivity.this);
 					messageSent.setTitle("Success!");
 					messageSent.setMessage("Successfully sent SMS message to " + contactName + " regarding your situation and present location.");
 					messageSent.setNeutralButton("OK", new DialogInterface.OnClickListener() {						
@@ -173,9 +173,9 @@ public class MainActivity extends Activity {
         switch(item.getItemId()) {
             case Menu.FIRST:
                 //Toast.makeText(MainActivity.this, "settings button clicked", Toast.LENGTH_SHORT).show();
-                Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                Intent settingsIntent = new Intent(AllContactsActivity.this, SettingsActivity.class);
 				settingsIntent.putExtra("contactsData", data);
-                MainActivity.this.startActivity(settingsIntent);
+                AllContactsActivity.this.startActivity(settingsIntent);
         }
         return true;
     }

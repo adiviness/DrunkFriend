@@ -78,7 +78,7 @@ public class Home extends Activity {
 
 	public void startAllContactsActivity(View v) {
 		//Toast.makeText(getBaseContext(), "all contacts", Toast.LENGTH_SHORT).show();
-		Intent allContactsIntent = new Intent(Home.this, MainActivity.class);
+		Intent allContactsIntent = new Intent(Home.this, AllContactsActivity.class);
 		allContactsIntent.putExtra("contactsData", data);
 		Home.this.startActivity(allContactsIntent);
 	}
