@@ -70,6 +70,7 @@ public class Home extends Activity {
 		switch(item.getItemId()) {
 			case Menu.FIRST:
 				Intent settingsIntent = new Intent(Home.this, SettingsActivity.class);
+				settingsIntent.putExtra("contactsData", data);
 				Home.this.startActivity(settingsIntent);
 		}
 		return true;

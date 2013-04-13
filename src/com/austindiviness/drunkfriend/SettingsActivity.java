@@ -34,7 +34,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 		protected void onCreate(Bundle bundle) {
 			super.onCreate(bundle);
 			addPreferencesFromResource(R.layout.settings);
-			data = getContacts();
+			Bundle extraData = getIntent().getExtras();
+			data = (ArrayList<ContactData>) extraData.get("contactsData");
 			names.add("None");
 			numbers.add("null");
 			for (ContactData item: data) {
@@ -72,30 +73,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 			super.onPause();
 			getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(SettingsActivity.this);
 		}
-
-	// eventually move out of here and into Home.java, and pass ArrayList with intent
-	public ArrayList<ContactData> getContacts() {
-		ArrayList<ContactData> data = new ArrayList<ContactData>(); // array to hold contact data to return to main method
-		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI; // dunno
-		String[] projection = new String[] {
-				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, 
-				ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER, 
-				ContactsContract.CommonDataKinds.Phone.TYPE,
-				ContactsContract.CommonDataKinds.Phone.NUMBER}; 
-		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1";
-		Cursor names = getContentResolver().query(uri, projection, selection, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
-		names.moveToFirst();
-		do {
-			int phoneType = names.getInt(names.getColumnIndex(Phone.TYPE));
-			if (phoneType == Phone.TYPE_MOBILE) {
-				String name = names.getString(names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-				String number = names.getString(names.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-				data.add(new ContactData(name, number));
-			}
-		}
-		while (names.moveToNext());
-		return data;
-	}
 	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		Preference pref = findPreference(key);
